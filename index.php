@@ -19,7 +19,6 @@ print("ran requireAuth()");
 $attributes = $as->getAttributes();
 print_r($attributes);
 
-
 //Generate Token
 $now = time();
 $hash = hash_hmac('sha256',$attributes["employee_id"][0] . "|" . time(),$secret_key);
