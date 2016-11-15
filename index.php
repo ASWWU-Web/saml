@@ -14,12 +14,6 @@ $as->requireAuth();
 //Get user attributes
 $attributes = $as->getAttributes();
 
-//Generate Token
-$now = time();
-$hash = hash_hmac('sha256',$attributes["employee_id"][0] . "|" . time(),$secret_key);
-
-$token = $attributes["employee_id"][0] . "|" . $now . "|" . $hash;
-
 // The data to send to the API
 $postData = array(
     'employee_id' => $attributes["employee_id"][0],
@@ -49,15 +43,23 @@ if($response === FALSE){
 // Decode the response
 $responseData = json_decode($response, TRUE);
 
-// Print the date from the response
-echo $responseData['status'];
+// Check to make sure our response was a success
+if( property_exists($responseData, "error") ){
+	die(curl_error($ch));
+}
+
+//Generate Token
+$now = time();
+$hash = hash_hmac('sha256',$attributes["employee_id"][0] . "|" . time(),$secret_key);
+
+$token = $attributes["employee_id"][0] . "|" . $now . "|" . $hash;
+
+//give the token to the user
+setcookie("token", $token, $now+1209600, "/", "aswwu.com", 1);
 
 //send those attributes to the super secure python endpoint.
 
 
 //get back a JSON that looks like this
 //{'user': user.to_json(), 'token': str(token)}
-
-//give the token to the user
-
 ?>
