@@ -22,7 +22,7 @@ $postData = array(
 );
 
 // Setup cURL
-$ch = curl_init('aswwu.com:8888/saml/account/');
+$ch = curl_init('https://aswwu.com/server/saml/account/');
 curl_setopt_array($ch, array(
     CURLOPT_POST => TRUE,
     CURLOPT_RETURNTRANSFER => TRUE,
